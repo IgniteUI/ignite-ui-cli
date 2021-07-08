@@ -1,0 +1,86 @@
+<p>igx-tabs component sample.</p>
+<p>You can read more about configuring the igx-tabs component in the 
+<a href="https://github.com/IgniteUI/igniteui-angular/blob/master/projects/igniteui-angular/src/lib/accordion/README.md" target="_blank">README</a> or the 
+<a href="https://www.infragistics.com/products/ignite-ui-angular/angular/components/accordion" target="_blank">official documentation</a>.</p>
+<igx-switch [(ngModel)]="singleBranchExpand">Single Branch Expand</igx-switch>
+<article class="sample-wrapper">
+    <igx-accordion #accordion [singleBranchExpand]="singleBranchExpand">
+        <igx-expansion-panel>
+            <igx-expansion-panel-header class="expansion-header">
+                <igx-expansion-panel-title>What has changed about subscription and pricing model?
+                </igx-expansion-panel-title>
+            </igx-expansion-panel-header>
+            <igx-expansion-panel-body>
+                We have moved to a subscription-based pricing model for all our developer tools. This makes it easier
+                for you to manage your license subscriptions and allows us to provide a better level of service for you.
+
+                We updated our pricing and packages to provide you with flexible options and the best value. This
+                includes <a href="https://www.infragistics.com/products/ignite-ui">Ignite UI </a>(formerly Ignite UI for
+                JavaScript) which includes all of our JavaScript framework
+                components for web development, including: Angular, ASP.NET (Core and MVC), Blazor, JQuery, React and
+                Web Components), as well as Infragistics Professional, Infragistics Ultimate, our Ultimate UI products.
+
+                We also offer multi-year subscriptions options with a built-in discount, so you can see the value up
+                front. With these updates we are confident that we are providing the best platforms and the best price.
+            </igx-expansion-panel-body>
+        </igx-expansion-panel>
+        <igx-expansion-panel>
+            <igx-expansion-panel-header class="expansion-header">
+                <igx-expansion-panel-title>Who will the updated changes impact?</igx-expansion-panel-title>
+            </igx-expansion-panel-header>
+            <igx-expansion-panel-body>
+                The license updates will impact all new and current customers using Ignite UI, Infragistics Professional
+                and Infragistics Ultimate. Specifically, we have also made updates to our product and packaging for
+                Ignite UI for JavaScript, Ignite UI for Angular, Ignite UI for React and Ignite UI for Web components.
+                For more information, please refer to this blog:
+
+                <a
+                    href="https://www.infragistics.com/community/blogs/b/jason_beres/posts/announcement-changes-to-ignite-ui-product-packaging">Announcement:
+                    Changes to Ignite UI Product & Packaging</a>
+
+                The pricing has been updated for all products and packages. So, all new or additional licenses will be
+                sold based on our new pricing and packages. All existing license agreements will be honored and renewed
+                based upon the current agreement.
+            </igx-expansion-panel-body>
+        </igx-expansion-panel>
+        <igx-expansion-panel>
+            <igx-expansion-panel-header class="expansion-header">
+                <igx-expansion-panel-title>What is the difference between your old model and your current subscription
+                    model
+                    for Ignite UI?</igx-expansion-panel-title>
+            </igx-expansion-panel-header>
+            <igx-expansion-panel-body>
+                For Ignite UI customers, we are moving away from NPM for licensed packages. The current NPM packages
+                will be replaced with packages that include a “Trial Version” watermark. Licensed packages for Ignite UI
+                will be available from our cloud hosted ProGet server.
+
+                For more information, please refer to this article:
+
+                <a
+                    href="https://www.infragistics.com/products/ignite-ui-angular/angular/components/general/ignite-ui-licensing">Moving
+                    from Trial to Licensed Ignite UI NPM Packages</a>
+            </igx-expansion-panel-body>
+        </igx-expansion-panel>
+        <igx-expansion-panel>
+            <igx-expansion-panel-header class="expansion-header">
+                <igx-expansion-panel-title>What happens if I don’t renew my subscription?</igx-expansion-panel-title>
+            </igx-expansion-panel-header>
+            <igx-expansion-panel-body>
+                Any unlicensed or trial versions of Ignite UI for Angular, React and Web Components will now include
+                this watermark.
+            </igx-expansion-panel-body>
+        </igx-expansion-panel>
+        <igx-expansion-panel>
+            <igx-expansion-panel-header class="expansion-header">
+                <igx-expansion-panel-title>If I don’t renew my subscription will I still have access to previous
+                    versions of
+                    Infragistics products?</igx-expansion-panel-title>
+            </igx-expansion-panel-header>
+            <igx-expansion-panel-body>
+                Any version of Infragistics software which you have downloaded can continue to be used perpetually.
+                Access to download any new or previous versions through our customer portal and package feeds will
+                require maintaining an active subscription by continuing to renew it.
+            </igx-expansion-panel-body>
+        </igx-expansion-panel>
+    </igx-accordion>
+</article>
