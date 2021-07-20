@@ -16,7 +16,7 @@ export class GlobalErrorHandlerService implements ErrorHandler {
       this.zone.run(() => {
         router
           .navigate(['error'])
-          .catch((err) => console.error(err));
+          .catch((err: any) => console.error(err));
       });
     }
   }

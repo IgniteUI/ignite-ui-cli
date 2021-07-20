@@ -8,7 +8,7 @@ export class LocalDataService {
   public records$: BehaviorSubject<any[]>;
 
   constructor() {
-    this.records$ = new BehaviorSubject([]);
+    this.records$ = new BehaviorSubject([] as any);
     this.records = this.records$.asObservable();
   }
 

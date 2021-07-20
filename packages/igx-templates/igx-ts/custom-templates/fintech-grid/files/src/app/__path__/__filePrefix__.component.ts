@@ -9,7 +9,8 @@ import {
   IgxGridComponent,
   IgxSliderComponent,
   SortingDirection,
-  IGridKeydownEventArgs
+  IGridKeydownEventArgs,
+  IRowSelectionEventArgs
 } from '<%=igxPackage%>';
 import { CategoryChartType, IgxCategoryChartComponent } from 'igniteui-angular-charts';
 import { timer } from 'rxjs';
@@ -24,23 +25,23 @@ import { LocalDataService } from './localData.service';
   styleUrls: ['./<%=filePrefix%>.component.scss']
 })
 export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('grid1', { static: true }) public grid1: IgxGridComponent;
-  @ViewChild('buttonGroup1', { static: true }) public buttonGroup1: IgxButtonGroupComponent;
-  @ViewChild('buttonGroup2', { static: true }) public buttonGroup2: IgxButtonGroupComponent;
-  @ViewChild('slider1', { static: true }) public volumeSlider: IgxSliderComponent;
-  @ViewChild('slider2', { static: true }) public intervalSlider: IgxSliderComponent;
-  @ViewChild('chart1', { static: true }) public chart1: IgxCategoryChartComponent;
-  @ViewChild('dialog', { static: true }) public dialog: IgxDialogComponent;
+  @ViewChild('grid1', { static: true }) public grid1!: IgxGridComponent;
+  @ViewChild('buttonGroup1', { static: true }) public buttonGroup1!: IgxButtonGroupComponent;
+  @ViewChild('buttonGroup2', { static: true }) public buttonGroup2!: IgxButtonGroupComponent;
+  @ViewChild('slider1', { static: true }) public volumeSlider!: IgxSliderComponent;
+  @ViewChild('slider2', { static: true }) public intervalSlider!: IgxSliderComponent;
+  @ViewChild('chart1', { static: true }) public chart1!: IgxCategoryChartComponent;
+  @ViewChild('dialog', { static: true }) public dialog!: IgxDialogComponent;
 
-  public showToolbar = false;
-  public properties;
+  public showToolbar: boolean = false;
+  public properties: string[] = [];
   public selectionMode: GridSelectionMode = 'multiple';
   public chartType = CategoryChartType;
-  public theme = false;
-  public volume = 1000;
-  public frequency = 500;
-  public data = [];
-  public chartData = [];
+  public theme: boolean = false;
+  public volume: number = 1000;
+  public frequency: number = 500;
+  public data: any[] = [];
+  public chartData: any[] = [];
   public multiCellSelection: { data: any[] } = { data: [] };
   public controls = [
     {
@@ -71,10 +72,10 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
 
   public contracts = Contract;
   public regions = REGIONS;
-  private subscription;
-  private selectedButton;
-  private timer;
-  private volumeChanged;
+  private subscription: any;
+  private selectedButton: number = -1;
+  private timer: any;
+  private volumeChanged: any;
   constructor(private localService: LocalDataService, private elRef: ElementRef) {
     this.subscription = this.localService.getData(this.volume);
     this.localService.records.subscribe(x => { this.data = x; });
@@ -102,10 +103,10 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     ];
     this.volumeChanged = this.volumeSlider.valueChange.pipe(debounce(() => timer(200)));
     this.volumeChanged.subscribe(
-      (x) => {
+      (x: any) => {
         this.localService.getData(this.volume);
       },
-      (err) => console.log('Error: ' + err));
+      (err: string) => console.log('Error: ' + err));
   }
 
   public ngAfterViewInit() {
@@ -117,17 +118,19 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
   public selectFirstGroupAndFillChart() {
     this.properties = ['Price', 'Country'];
     this.setChartConfig('Countries', 'Prices (USD)', 'Data Chart with prices by Category and Country');
-    // tslint:disable-next-line: max-line-length
-    const recordsToBeSelected = this.grid1.selectionService.getRowIDs(this.grid1.groupsRecords[0].groups[0].groups[0].records);
-    recordsToBeSelected.forEach(item => {
-      this.grid1.selectionService.selectRowById(item, false, true);
-    });
+
+    if (this.grid1.groupsRecords[0].groups && this.grid1.groupsRecords[0]?.groups[0]?.groups) {
+        const recordsToBeSelected = this.grid1.selectionService.getRowIDs(this.grid1.groupsRecords[0].groups[0].groups[0].records);
+        recordsToBeSelected.forEach(item => {
+          this.grid1.selectionService.selectRowById(item, false, true);
+        });
+      }
   }
-  public setChartConfig(xAsis, yAxis, title) {
+
+  public setChartConfig(xAsis: string, yAxis: string, title: string) {
     // update label interval and angle based on data
     this.setLabelIntervalAndAngle();
 
-    // this.chart1.yAxisFormatLabel = this.formatYAxisLabel;
     this.chart1.xAxisTitle = xAsis;
     this.chart1.yAxisTitle = yAxis;
     this.chart1.chartTitle = title;
@@ -175,7 +178,7 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  public closeDialog(evt) {
+  public closeDialog(evt: any) {
     if (this.dialog.isOpen &&
       evt.shiftKey === true && evt.ctrlKey === true && evt.key.toLowerCase() === 'd') {
       evt.preventDefault();
@@ -209,13 +212,15 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  public rowSelectionChanged(args) {
+  public rowSelectionChanged(args: IRowSelectionEventArgs) {
     this.grid1.clearCellSelection();
     this.chartData = [];
     args.newSelection.forEach(row => {
-      this.chartData.push(this.grid1.data[row]);
-      this.chart1.notifyInsertItem(this.chartData, this.chartData.length - 1,
-        this.grid1.data[row]);
+        if (this.grid1.data) {
+            this.chartData.push(this.grid1.data[row]);
+            this.chart1.notifyInsertItem(this.chartData, this.chartData.length - 1,
+              this.grid1.data[row]);
+        }
     });
     this.setLabelIntervalAndAngle();
     this.setChartConfig('Countries', 'Prices (USD)', 'Data Chart with prices by Category and Country');
@@ -343,11 +348,7 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     this.chart1.yAxisAbbreviateLargeNumbers = true;
   }
 
-  public formatYAxisLabel(item: any): string {
-    return item + 'test test';
-  }
-
-  public gridKeydown(evt) {
+  public gridKeydown(evt: any) {
     if (this.grid1.selectedRows.length > 0 &&
       evt.shiftKey === true && evt.ctrlKey === true && evt.key.toLowerCase() === 'd') {
       evt.preventDefault();
@@ -425,7 +426,7 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
   /**
    * Generates ne values for Change, Price and ChangeP columns
    */
-  private randomizeObjectData(dataObj) {
+  private randomizeObjectData(dataObj: any) {
     const changeP = 'Change(%)';
     const res = this.generateNewPrice(dataObj.Price);
     dataObj.Change = res.Price - dataObj.Price;
@@ -434,7 +435,7 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     return {...dataObj};
   }
 
-  private generateNewPrice(oldPrice): any {
+  private generateNewPrice(oldPrice: number): any {
     let rnd = Math.random();
     rnd = Math.round(rnd * 100) / 100;
     const volatility = 2;

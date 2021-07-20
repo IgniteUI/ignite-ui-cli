@@ -5,7 +5,7 @@ import {
 import {
   AbsoluteScrollStrategy,
   ConnectedPositioningStrategy,
-	GridSelectionMode,
+    GridSelectionMode,
   HorizontalAlignment,
   IgxButtonGroupComponent,
   IgxSliderComponent,
@@ -27,16 +27,16 @@ import { ITreeGridAggregation } from './tree-grid-grouping.pipe';
   styleUrls: ['./<%=filePrefix%>.component.scss']
 })
 export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('grid1', { static: true }) public grid1: IgxTreeGridComponent;
-  @ViewChild('buttonGroup1', { static: true }) public buttonGroup1: IgxButtonGroupComponent;
-  @ViewChild('slider1', { static: true }) public volumeSlider: IgxSliderComponent;
-  @ViewChild('slider2', { static: true }) public intervalSlider: IgxSliderComponent;
+  @ViewChild('grid1', { static: true }) public grid1!: IgxTreeGridComponent;
+  @ViewChild('buttonGroup1', { static: true }) public buttonGroup1!: IgxButtonGroupComponent;
+  @ViewChild('slider1', { static: true }) public volumeSlider!: IgxSliderComponent;
+  @ViewChild('slider2', { static: true }) public intervalSlider!: IgxSliderComponent;
 
-  public showToolbar = true;
+  public showToolbar: boolean = true;
   public selectionMode: GridSelectionMode = 'multiple';
-  public theme = false;
-  public volume = 1000;
-  public frequency = 500;
+  public theme: boolean = false;
+  public volume: number = 1000;
+  public frequency: number = 500;
   public data: any[] = [];
   public controls = [
     {
@@ -98,10 +98,10 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     scrollStrategy: new AbsoluteScrollStrategy()
   };
 
-  private subscription;
-  private selectedButton;
-  private timer;
-  private volumeChanged;
+  private subscription: any;
+  private selectedButton: number = -1;
+  private timer: any;
+  private volumeChanged: any;
 
   constructor(private zone: NgZone, private localService: LocalDataService, private elRef: ElementRef) {
     this.subscription = this.localService.getData(this.volume);
@@ -112,10 +112,10 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     this.grid1.sortingExpressions = [{ fieldName: this.groupColumnKey, dir: SortingDirection.Desc }];
     this.volumeChanged = this.volumeSlider.valueChange.pipe(debounce(() => timer(200)));
     this.volumeChanged.subscribe(
-      (x) => {
+      (x: any) => {
         this.localService.getData(this.volume);
       },
-      (err) => console.log('Error: ' + err));
+      (err: string) => console.log('Error: ' + err));
   }
 
   public ngAfterViewInit() {
@@ -281,7 +281,7 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
   /**
    * Generates ne values for Change, Price and ChangeP columns
    */
-  private randomizeObjectData(dataObj) {
+  private randomizeObjectData(dataObj: any) {
     const changeP = 'Change(%)';
     const res = this.generateNewPrice(dataObj.Price);
     dataObj.Change = res.Price - dataObj.Price;
@@ -289,7 +289,7 @@ export class <%=ClassName%>Component implements OnInit, AfterViewInit, OnDestroy
     dataObj[changeP] = res.ChangePercent;
   }
 
-  private generateNewPrice(oldPrice): any {
+  private generateNewPrice(oldPrice:number): any {
     let rnd = Math.random();
     rnd = Math.round(rnd * 100) / 100;
     const volatility = 2;

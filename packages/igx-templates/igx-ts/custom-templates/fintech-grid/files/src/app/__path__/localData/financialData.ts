@@ -951,14 +951,14 @@ export class FinancialData {
     }
     return {data: currData, recordsUpdated: y };
     }
-  private randomizeObjectData(dataObj) {
+  private randomizeObjectData(dataObj: any) {
     const changeP = 'Change(%)';
     const res = this.generateNewPrice(dataObj.Price);
     dataObj.Change = res.Price - dataObj.Price;
     dataObj.Price = res.Price;
     dataObj[changeP] = res.ChangePercent;
   }
-  private generateNewPrice(oldPrice): any {
+  private generateNewPrice(oldPrice: number): any {
     const rnd = parseFloat(Math.random().toFixed(2));
     const volatility = 2;
     let newPrice = 0;
@@ -977,7 +977,7 @@ export class FinancialData {
 
     return result;
   }
-  private generateRandomNumber(min, max) {
+  private generateRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   private randomizeCountry(region: any) {
